@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <title>Katalog pojazdów</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+    integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="container-fluid vh-100 d-flex flex-column" style="padding: 0">
+    <nav class="navbar d-flex navbar-expand-lg navbar-dark bg-dark flex-shrink-0">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="">Katalog pojazdów</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#glowna" onclick="karuzelaBootstrap.to(0)">Główna</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#katalog" onclick="karuzelaBootstrap.to(1)">Katalog</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Opcje
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item"  onclick="modalNowyPojazd.toggle()">Dodaj pojazd</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li><a class="dropdown-item" onclick="zapisz();">Zapisz katalog</a></li>
+                <li><a class="dropdown-item" onclick="wczytaj();">Wczytaj katalog</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="border d-flex h-100" style="height: 100%; padding: 15px">
+      <div id="karuzela" class="carousel slide w-100 d-flex" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false" data-interval="false">
+        <div class="carousel-inner d-flex">
+          <div class="carousel-item active align-self-center" >
+
+            <h1>
+              Witamy na stronie
+            </h1>
+            <h2>
+              W katalogu mamy: 
+              <p style="display: inline" id="wartosc">0 pojazdów</p>
+            </h2>
+          </div>
+          <div class="carousel-item align-self-start " >
+            <h1 class="justify-content-center text-center">
+              Tablica
+            </h1>
+            <div id="tablica">
+
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Dodaj pojazd</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form onsubmit="dodajPojazd()" target="dummyframe" id="dodajPojazd">
+          <div class="modal-body">
+            <div class="row mb-3">
+              <div class="col-4">
+                <label class="visually-hidden" for="specificSizeInputName">Marka</label>
+                <div class="input-group">
+                  <div class="input-group-text">Marka</div>
+                  <input class="form-control" list="markiKatalogu" id="Marka" placeholder="Honda" />
+                  <datalist id="markiKatalogu">
+                    <option value="Ford"></option>
+                    <option value="Audi"></option>
+                    <option value="Seat"></option>
+                    <option value="Honda"></option>
+                    <option value="Mazda"></option>
+                  </datalist>
+                </div>
+              </div>
+              <div class="col-8">
+                <label class="visually-hidden" for="specificSizeInputName">Marka</label>
+                <div class="input-group">
+                  <div class="input-group-text">Model</div>
+                  <input class="form-control" list="markiKatalogu" id="Model" placeholder="Civic" />
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-4">
+                <div class="input-group">
+                  <span class="input-group-text">Rocznik</span>
+                  <input type="number" min="1900" max="2099" step="1" value="2021" class="form-control"
+                    aria-label="Rocznik" />
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="input-group">
+                  <span class="input-group-text">Pojemność:</span>
+                  <input class="form-control" aria-label="Pojemnosc" type="number" min="0" max="9999" step="100" />
+                  <span class="input-group-text">cm³</span>
+                </div>
+              </div>
+              <div class="col-4 align-content-center">
+                <div class="input-group">
+                  <span class="input-group-text">Przebieg</span>
+                  <input type="number" class="form-control" aria-label="Przebieg" />
+                  <span class="input-group-text">KM</span>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3 align-content-center"></div>
+            <div class="row mb-3" style="padding-left: 15px">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="Skrzynia" />
+                <label class="form-check-label" for="Skrzynia">Manualna</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary">Anuluj</button>
+            <button type="submit" class="btn btn-primary">Dodaj</button>
+          </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+    crossorigin="anonymous"></script>
+  <script src="js/pojazd.js"></script>
+  <script src="js/katalog.js"></script>
+  <script src="js/sort.js"></script>
+</body>
+
+</html>

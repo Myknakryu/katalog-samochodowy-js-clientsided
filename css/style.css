@@ -1,0 +1,26 @@
+.dropdown-item:hover {
+    cursor:pointer;
+   }
+
+   .table-sort th {
+    cursor: pointer;
+  }
+  
+  .table-sort .th-sort-asc::after {
+    content: "\25b4";
+  }
+  
+  .table-sort .th-sort-desc::after {
+    content: "\25be";
+  }
+  
+  .table-sort .th-sort-asc::after,
+  .table-sort .th-sort-desc::after {
+    margin-left: 5px;
+  }
+  
+  .table-sort .th-sort-asc,
+  .table-sort .th-sort-desc {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  
